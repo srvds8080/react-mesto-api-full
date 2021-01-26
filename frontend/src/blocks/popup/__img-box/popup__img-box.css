@@ -1,0 +1,8 @@
+.popup__img-box {
+	margin: 0;
+	max-width: 75vw;
+	max-height: 75vh;
+	position: relative;
+	align-self: center;
+	z-index: 2;
+}

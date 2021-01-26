@@ -1,0 +1,19 @@
+.profile__info-name {
+	max-width: 200px;
+	text-align: start;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	margin: 0;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 27px;
+	line-height: 2;
+}
+@media screen and (min-width: 768px) {
+	.profile__info-name {
+		max-width: 320px;
+		font-size: 42px;
+		line-height: 1.33;
+	}
+}

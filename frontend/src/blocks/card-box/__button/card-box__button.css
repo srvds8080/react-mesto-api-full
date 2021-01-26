@@ -1,0 +1,26 @@
+.card-box__button {
+    position: relative;
+    min-width: 21px;
+    height: 19px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    background-image: url(../../../images/like.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-left: 31px;
+    outline: none;
+    transition: ease 0.3s;
+    align-self: center;
+}
+
+.card-box__button:hover {
+    transition: ease 0.5s;
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.card-box__button:active {
+    outline: none;
+}

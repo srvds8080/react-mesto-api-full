@@ -1,0 +1,13 @@
+.signLink__link {
+  outline: none;
+  color: #ffffff;
+  transition: ease 0.3s;
+}
+.signLink__link:visited {
+  color: #ffffff;
+}
+.signLink__link:hover {
+  color: #A9A9A9;
+  transition: ease 0.5s;
+  cursor: pointer;
+}

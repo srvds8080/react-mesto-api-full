@@ -1,0 +1,12 @@
+.elements__item {
+	width: 100%;
+	margin-bottom: 20px;
+}
+.elements__item:last-child {
+	margin-bottom: 0px;
+}
+@media screen and (min-width: 421px) {
+	.elements__item {
+		margin: 0;
+	}
+}

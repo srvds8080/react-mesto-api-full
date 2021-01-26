@@ -1,0 +1,4 @@
+.popup__form-error_visible {
+  opacity: 1;
+  transition: ease 0.5s;
+}

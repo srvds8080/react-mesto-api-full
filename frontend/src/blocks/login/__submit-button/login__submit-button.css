@@ -1,0 +1,16 @@
+.login__submit-button {
+  border: none;
+  outline: none;
+  padding: 0;
+  background-color: transparent;
+  width: 358px;
+  height: 50px;
+  margin-top: 90px;
+  background: #FFFFFF;
+  border-radius: 2px;
+  color: #000000;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 1.2;
+}

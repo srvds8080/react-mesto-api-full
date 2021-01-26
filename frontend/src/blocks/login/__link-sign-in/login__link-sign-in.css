@@ -1,0 +1,16 @@
+.login__link-sign-in {
+  margin-left: 8px;
+}
+.login__link-sign-in {
+  outline: none;
+  color: #ffffff;
+  transition: ease 0.3s;
+}
+.login__link-sign-in:visited {
+  color: #ffffff;
+}
+.login__link-sign-in:hover {
+  color: #A9A9A9;
+  transition: ease 0.5s;
+  cursor: pointer;
+}

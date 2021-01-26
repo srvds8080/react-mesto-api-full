@@ -1,0 +1,16 @@
+.popup__label {
+	width: 90%;
+	margin-bottom: 20px;
+}
+.popup__label:last-of-type {
+	margin: 0;
+
+}
+@media screen and (min-width: 768px) {
+	.popup__label {
+		width: 100%;
+		margin-bottom: 30px;
+	}
+}
+
+

@@ -1,0 +1,12 @@
+.profile__avatar_container {
+    position: relative;
+    display: block;
+    background-color: transparent;
+    padding: 0;
+    width: 120px;
+    height: 120px;
+    border-radius:  50%;
+    border: none;
+    outline: none;
+    overflow: hidden;
+}
