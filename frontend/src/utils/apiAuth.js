@@ -5,12 +5,13 @@ class ApiAuth {
   }
 
   registration(data) {
-    return fetch(`${this.baseUrl}signup`, {
+    return fetch(`${this.baseUrl}sign-up`, {
       method: 'POST',
       headers: this.headers,
       body: JSON.stringify(data),
     })
       .then((res) => {
+        console.log(res);
         if (res.ok) {
           return res.json();
         }
@@ -20,7 +21,7 @@ class ApiAuth {
   }
 
   authentication(data) {
-    return fetch(`${this.baseUrl}signin`, {
+    return fetch(`${this.baseUrl}sign-in`, {
       method: 'POST',
       headers: this.headers,
       body: JSON.stringify(data),
@@ -53,7 +54,8 @@ class ApiAuth {
   }
 }
 
-const baseUrl = 'https://auth.nomoreparties.co/';
+// const baseUrl = 'https://auth.nomoreparties.co/';
+const baseUrl = 'http://localhost:3000/';
 const contentType = 'application/json';
 const Auth = new ApiAuth(baseUrl, contentType);
 export default Auth;

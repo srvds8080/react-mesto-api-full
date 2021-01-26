@@ -24,14 +24,15 @@ const getAllUsers = (req, res) => {
 };
 
 const getUser = (req, res) => {
-  const { id } = req.params;
-  User.findById(id)
+  User.findById(req.user._id)
     .orFail(() => {
       const error = new Error('Пользователь по заданному id отсутствует в базе');
       error.statusCode = NOTFUOND_CODE;
       throw error;
     })
-    .then((user) => res.status(OK_CODE).send(user))
+    .then((user) => {
+      res.status(OK_CODE).send(user);
+    })
     .catch((error) => catchError(error, res));
 };
 
@@ -60,7 +61,9 @@ const createUser = (req, res) => {
             .then((isUser) => {
               res.status(CREATE_CODE).send(isUser);
             })
-            .catch((err) => res.status(INTERNAL_SERVER_ERROR_CODE).send({ message: err.message }));
+            .catch((err) => {
+              res.status(INTERNAL_SERVER_ERROR_CODE).send({ message: err.message });
+            });
         });
     })
     .catch((err) => res.status(INTERNAL_SERVER_ERROR_CODE).send({ message: err.message }));

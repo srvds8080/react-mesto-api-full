@@ -42,7 +42,7 @@ function App() {
     if (localToken) {
       Auth.tokenCheck(localToken)
         .then((res) => {
-          const { email } = res.data;
+          const { email } = res;
           setUserEmail(email);
           setLoggedIn(true);
           history.push('/');

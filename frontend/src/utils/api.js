@@ -18,6 +18,7 @@ export class Api {
   }
 
   getUserInfo() {
+    console.log(this.headers);
     return fetch(`${this.baseUrl}users/me`, {
       method: 'GET',
       headers: this.headers,
@@ -117,8 +118,7 @@ export class Api {
   }
 }
 
-const baseUrl = 'https://mesto.nomoreparties.co/v1/cohort-16/';
-const authorization = '0227e00e-2fc2-48f1-b527-44b2f5fab9ba';
+const baseUrl = 'http://localhost:3000/';
 const contentType = 'application/json';
-const api = new Api(baseUrl, authorization, contentType);
+const api = new Api(baseUrl, `Bearer ${localStorage.getItem('jwt')}`, contentType);
 export default api;
