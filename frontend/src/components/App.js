@@ -112,7 +112,7 @@ function App() {
   const handleAddPlaceSubmit = (data) => {
     api.addCard(data)
       .then((newCard) => {
-        setCards((newCards) => [newCard, ...newCards]);
+        setCards((newCards) => [newCard.data, ...newCards]);
       })
       .catch((error) => console.log(error))
       .finally(() => {
@@ -169,8 +169,7 @@ function App() {
         setLoggedIn(true);
         history.push('/');
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
         setIsInfoTooltipOpen(true);
       });
   }, []);
