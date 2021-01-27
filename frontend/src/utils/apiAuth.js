@@ -1,6 +1,6 @@
 class ApiAuth {
-  constructor(baseUrl, contentType) {
-    this.headers = { 'Content-Type': contentType };
+  constructor(baseUrl) {
+    this.headers = { 'Content-Type': 'application/json' };
     this.baseUrl = baseUrl;
   }
 
@@ -53,8 +53,6 @@ class ApiAuth {
   }
 }
 
-// const baseUrl = 'https://auth.nomoreparties.co/';
 const baseUrl = 'http://localhost:3000/';
-const contentType = 'application/json';
-const Auth = new ApiAuth(baseUrl, contentType);
+const Auth = new ApiAuth(baseUrl);
 export default Auth;
