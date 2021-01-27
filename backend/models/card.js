@@ -4,13 +4,11 @@ const { REGEX_URL } = require('../utils/constants');
 const cardSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
     minlength: 2,
     maxlength: 30,
   },
   link: {
     type: String,
-    required: true,
     validate: {
       validator(v) {
         return REGEX_URL.test(v);
@@ -19,12 +17,10 @@ const cardSchema = new mongoose.Schema({
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
     ref: 'owner',
   },
   likes: [{
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
     ref: 'user',
     default: [],
   }],
