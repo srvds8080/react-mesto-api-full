@@ -16,7 +16,7 @@ function Card({
     owner,
     likes,
   } = card;
-  const isOwn = owner._id === currentUser._id;
+  const isOwn = owner === currentUser._id;
   const isLiked = likes.some((i) => i._id === currentUser._id);
   const cardDeleteButtonClassName = (
     `card-box__delete ${isOwn ? 'card-box__delete_is-visible' : 'card-box__delete_is-hidden'}`
