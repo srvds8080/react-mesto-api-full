@@ -52,14 +52,16 @@ function App() {
   }, []);
 
   useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getCard()])
-      .then((data) => {
-        const [userInfo, cardsData] = data;
-        setCurrentUser(userInfo);
-        setCards(cardsData.reverse());
-      })
-      .catch((error) => console.log(error));
-  }, []);
+    if (loggedIn) {
+      Promise.all([api.getUserInfo(), api.getCard()])
+        .then((data) => {
+          const [userInfo, cardsData] = data;
+          setCurrentUser(userInfo);
+          setCards(cardsData.reverse());
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [loggedIn]);
 
   // handles functions
   const closeAllPopups = () => {
