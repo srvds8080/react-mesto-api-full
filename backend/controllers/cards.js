@@ -15,6 +15,7 @@ const {
 
 const getAllCards = (req, res) => {
   Card.find({})
+    .populate([{ path: 'likes', select: [] }])
     .then((cards) => res.status(OK_CODE).send(cards))
     .catch((error) => res.status(INTERNAL_SERVER_ERROR_CODE).send(error));
 };
@@ -63,6 +64,7 @@ const deleteCard = (req, res) => Card
 const putLike = (req, res) => {
   Card
     .findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: [req.user._id] } }, { new: true })
+    .populate({ path: 'likes' })
     .orFail(() => {
       const error = new Error('такой карточки не существует');
       error.statusCode = NOTFUOND_CODE;
@@ -71,7 +73,7 @@ const putLike = (req, res) => {
     .then((card) => {
       res.status(OK_CODE).send(card);
     })
-    .catch((error) => catchError(error, res));
+    .catch((error) => console.log(error.message));
 };
 const removeLike = (req, res) => {
   Card
