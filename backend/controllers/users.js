@@ -1,40 +1,37 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const validator = require('validator');
+const NotFoundError = require('../errors/BadRequestError');
+const ConflictError = require('../errors/ConflictError');
+const BadRequestError = require('../errors/BadRequestError');
+const UnauthorizedErrord = require('../errors/UnauthorizedError');
+
 const User = require('../models/user');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 // errors cods
 const {
   OK_CODE,
-  INTERNAL_SERVER_ERROR_CODE,
   CREATE_CODE,
-  BAD_REQUEST_CODE,
   NOTFUOND_CODE,
-  REGEX_URL,
 } = require('../utils/constants');
 
-const {
-  catchError,
-} = require('../utils/errors');
-
-const getAllUsers = (req, res) => {
+const getAllUsers = (req, res, next) => {
   User.find()
     .then((users) => res.status(OK_CODE).send(users))
-    .catch((error) => res.status(INTERNAL_SERVER_ERROR_CODE).send(error));
+    .catch(next);
 };
 
-const getUser = (req, res) => {
+const getUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(() => {
-      const error = new Error('Пользователь по заданному id отсутствует в базе');
-      error.statusCode = NOTFUOND_CODE;
-      throw error;
+      throw new NotFoundError('такой карточки не существует');
     })
     .then((user) => res.status(OK_CODE).send(user))
-    .catch((error) => catchError(error, res));
+    .catch(next);
 };
 
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
   const {
     name,
     about,
@@ -45,7 +42,7 @@ const createUser = (req, res) => {
   User.findOne({ email })
     .then((user) => {
       if (user) {
-        return Promise.reject(new Error('Пользователь существует'));
+        throw new ConflictError('Пользователь существует');
       }
       return bcrypt.hash(password, 10)
         .then((hash) => {
@@ -59,15 +56,13 @@ const createUser = (req, res) => {
             .then((isUser) => {
               res.status(CREATE_CODE).send(isUser);
             })
-            .catch((err) => {
-              res.status(INTERNAL_SERVER_ERROR_CODE).send({ message: err.message });
-            });
+            .catch(next);
         });
     })
-    .catch((err) => res.status(INTERNAL_SERVER_ERROR_CODE).send({ message: err.message }));
+    .catch(next);
 };
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
@@ -78,47 +73,51 @@ const login = (req, res) => {
       );
       res.send({ token });
     })
-    .catch((err) => {
-      res
-        .status(401)
-        .send({ message: err.message });
+    .catch(() => {
+      const error = new UnauthorizedErrord('email или пароль неверные');
+      next(error);
     });
 };
 
-const updateUser = (req, res) => {
+const updateUser = (req, res, next) => {
   const { _id } = req.user;
   const { name, about } = req.body;
   if (!name || name < 2) {
-    res.status(BAD_REQUEST_CODE).send({ message: 'Значение "name" обязательно и не может быть короче двух символов' });
+    throw new BadRequestError('Значение "name" обязательно и не может быть короче двух символов');
   } else {
     User.findByIdAndUpdate(_id, { name, about }, { new: true })
       .orFail(() => {
-        const error = new Error('Пользователь по заданному id отсутствует в базе');
-        error.statusCode = NOTFUOND_CODE;
-        throw error;
+        throw new NotFoundError('Пользователь по заданному id отсутствует в базе');
       })
       .then((user) => {
         res.status(OK_CODE).send(user);
       })
-      .catch((error) => catchError(error, res));
+      .catch(next);
   }
 };
 
-const updateUserAvatar = (req, res) => {
+const updateUserAvatar = (req, res, next) => {
   const { _id } = req.user;
   const { avatar } = req.body;
-  if (!REGEX_URL.test(avatar)) {
-    res.status(BAD_REQUEST_CODE).send({ message: `${avatar} не является URL` });
+  if (!validator.isURL(avatar)) {
+    throw new BadRequestError(`${avatar} не является URL`);
   } else {
     User.findByIdAndUpdate(_id, { avatar }, { new: true })
       .then((user) => {
         if (!user) {
-          res.status(NOTFUOND_CODE).send({ message: 'Пользователь по заданному id отсутствует в базе' });
-          return;
+          throw new NotFoundError('Пользователь по заданному id отсутствует в базе');
         }
         res.status(OK_CODE).send(user);
       })
-      .catch((error) => catchError(error, res));
+      .catch((error) => {
+        if (error.name === 'CastError') {
+          throw new BadRequestError('переданы некоректные данные');
+        } else if (error.statusCode === NOTFUOND_CODE) {
+          res.status(NOTFUOND_CODE).send({ message: error.message });
+          throw new NotFoundError(error.message);
+        }
+      })
+      .catch(next);
   }
 };
 
