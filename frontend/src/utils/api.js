@@ -18,7 +18,6 @@ export class Api {
   }
 
   getUserInfo() {
-    console.log(this.headers);
     return fetch(`${this.baseUrl}users/me`, {
       method: 'GET',
       headers: this.headers,
