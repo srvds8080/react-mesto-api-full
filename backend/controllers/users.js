@@ -30,9 +30,7 @@ const getUser = (req, res) => {
       error.statusCode = NOTFUOND_CODE;
       throw error;
     })
-    .then((user) => {
-      res.status(OK_CODE).send(user);
-    })
+    .then((user) => res.status(OK_CODE).send(user))
     .catch((error) => catchError(error, res));
 };
 

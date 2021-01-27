@@ -15,7 +15,7 @@ const {
 
 const getAllCards = (req, res) => {
   Card.find({})
-    .populate([{ path: 'likes', select: [] }])
+    .populate([{ path: 'likes' }])
     .then((cards) => res.status(OK_CODE).send(cards))
     .catch((error) => res.status(INTERNAL_SERVER_ERROR_CODE).send(error));
 };

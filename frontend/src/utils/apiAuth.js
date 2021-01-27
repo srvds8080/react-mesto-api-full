@@ -11,7 +11,6 @@ class ApiAuth {
       body: JSON.stringify(data),
     })
       .then((res) => {
-        console.log(res);
         if (res.ok) {
           return res.json();
         }
