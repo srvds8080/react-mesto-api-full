@@ -18,7 +18,7 @@ const {
 const getUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(() => {
-      throw new NotFoundError('такой карточки не существует');
+      throw new NotFoundError('Пользователя не существует');
     })
     .then((user) => res.status(OK_CODE).send(user))
     .catch(next);
