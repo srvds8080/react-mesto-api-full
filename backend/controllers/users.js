@@ -15,12 +15,6 @@ const {
   CREATE_CODE,
 } = require('../utils/constants');
 
-const getAllUsers = (req, res, next) => {
-  User.find()
-    .then((users) => res.status(OK_CODE).send(users))
-    .catch(next);
-};
-
 const getUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(() => {
@@ -120,7 +114,6 @@ const updateUserAvatar = (req, res, next) => {
 };
 
 module.exports = {
-  getAllUsers,
   getUser,
   createUser,
   updateUser,
