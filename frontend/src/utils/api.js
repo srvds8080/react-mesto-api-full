@@ -148,6 +148,6 @@ class Api {
   }
 }
 
-const baseUrl = 'http://localhost:3000/';
+const baseUrl = 'https://api.srvds.students.nomoredomains.monster/';
 const api = new Api(baseUrl);
 export default api;

@@ -10,12 +10,14 @@ const cardsRouter = require('./routes/cards.js');
 const { login, createUser } = require('./controllers/users.js');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { pathDataBase } = require('./utils/constants.js');
+// const { pathDataBase } = require('./utils/constants.js');
 
 const { PORT = 3000 } = process.env;
 const app = express();
 
 const allowedCors = [
+  'https://api.srvds.students.nomoredomains.monster',
+  'http://api.srvds.students.nomoredomains.monster',
   'http://localhost:5000',
   'http://localhost:3000',
 ];
@@ -26,7 +28,7 @@ const corsOptions = {
   },
 };
 
-mongoose.connect(pathDataBase, {
+mongoose.connect('mongodb+srv://srvds:1234qwer@cluster0.vzqr2.mongodb.net/<dbname>?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,

@@ -2,7 +2,7 @@
   "name": "mesto-react",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://srvds8080.github.io/mesto-react/",
+  "homepage": ".",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -21,7 +21,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run-script build",
-    "deploy": "gh-pages -d build"
+    "deploy": "npm run build && scp -rv ./build/* srvds8080@srvds.students.nomoredomains.monster:/home/srvds8080/praktikum/frontend"
   },
   "eslintConfig": {
     "extends": [
