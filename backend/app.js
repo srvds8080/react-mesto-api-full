@@ -10,7 +10,7 @@ const cardsRouter = require('./routes/cards.js');
 const { login, createUser } = require('./controllers/users.js');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-// const { pathDataBase } = require('./utils/constants.js');
+const { pathDataBase } = require('./utils/constants.js');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -26,7 +26,7 @@ const corsOptions = {
   },
 };
 
-mongoose.connect('mongodb+srv://srvds:1234qwer@cluster0.vzqr2.mongodb.net/<dbname>?retryWrites=true&w=majority', {
+mongoose.connect(pathDataBase, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
