@@ -17,7 +17,7 @@ function Card({
     likes,
   } = card;
   const isOwn = owner === currentUser._id;
-  const isLiked = likes.some((i) => i._id === currentUser._id);
+  const isLiked = likes.some((i) => i === currentUser._id);
   const cardDeleteButtonClassName = (
     `card-box__delete ${isOwn ? 'card-box__delete_is-visible' : 'card-box__delete_is-hidden'}`
   );
@@ -26,7 +26,6 @@ function Card({
   const handleCardClick = () => {
     onCardClick({ link, name });
   };
-
   return (
     <li className="card-box elements__item">
       <button
