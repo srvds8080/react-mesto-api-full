@@ -10,7 +10,6 @@ const {
 
 const getAllCards = (req, res, next) => {
   Card.find({})
-    .populate([{ path: 'likes' }])
     .then((cards) => res.status(OK_CODE).send(cards))
     .catch(next);
 };
@@ -54,7 +53,6 @@ const deleteCard = (req, res, next) => Card
 const putLike = (req, res, next) => {
   Card
     .findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: [req.user._id] } }, { new: true })
-    .populate({ path: 'likes' })
     .orFail(() => {
       throw new NotFoundError('такой карточки не существует');
     })
