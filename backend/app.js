@@ -46,7 +46,7 @@ app.post('/sign-in',
   celebrate({
     body: Joi.object().keys({
       email: Joi.string().required().email(),
-      password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).min(8).required(),
+      password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
     }).unknown(true),
   }),
   login);
@@ -58,7 +58,7 @@ app.post('/sign-up',
       about: Joi.string().min(2).max(30).default('Исследователь'),
       avatar: Joi.string().default('https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png'),
       email: Joi.string().required().email(),
-      password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).min(8).required(),
+      password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
     }).unknown(true),
   }),
   createUser);
