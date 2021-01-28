@@ -8,7 +8,9 @@ const auth = require('./middlewares/auth');
 const usersRouter = require('./routes/users.js');
 const cardsRouter = require('./routes/cards.js');
 const { login, createUser } = require('./controllers/users.js');
-// const { urlBD } = require('./utils/constants.js');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+
+// const { pathDataBase } = require('./utils/constants.js');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -33,6 +35,8 @@ mongoose.connect('mongodb+srv://srvds:1234qwer@cluster0.vzqr2.mongodb.net/<dbnam
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
+app.use(requestLogger);
+
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
@@ -46,6 +50,7 @@ app.post('/sign-in',
     }).unknown(true),
   }),
   login);
+
 app.post('/sign-up',
   celebrate({
     body: Joi.object().keys({
@@ -57,10 +62,12 @@ app.post('/sign-up',
     }).unknown(true),
   }),
   createUser);
+
 app.use(auth);
 app.use('/', usersRouter);
 app.use('/', cardsRouter);
 
+app.use(errorLogger);
 app.use(errors());
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
