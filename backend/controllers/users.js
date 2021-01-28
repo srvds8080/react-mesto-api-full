@@ -13,7 +13,6 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 const {
   OK_CODE,
   CREATE_CODE,
-  NOTFUOND_CODE,
 } = require('../utils/constants');
 
 const getAllUsers = (req, res, next) => {
@@ -112,8 +111,7 @@ const updateUserAvatar = (req, res, next) => {
       .catch((error) => {
         if (error.name === 'CastError') {
           throw new BadRequestError('переданы некоректные данные');
-        } else if (error.statusCode === NOTFUOND_CODE) {
-          res.status(NOTFUOND_CODE).send({ message: error.message });
+        } else if (error.statusCode === 404) {
           throw new NotFoundError(error.message);
         }
       })
