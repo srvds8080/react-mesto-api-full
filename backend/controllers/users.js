@@ -15,6 +15,21 @@ const {
   CREATE_CODE,
 } = require('../utils/constants');
 
+const getUsers = (req, res, next) => {
+  User.find()
+    .then((users) => res.status(OK_CODE).send(users))
+    .catch(next);
+};
+
+const getUserById = (req, res, next) => {
+  User.findById(req.params.id)
+    .orFail(() => {
+      throw new NotFoundError('Пользователя не существует');
+    })
+    .then((user) => res.status(OK_CODE).send(user))
+    .catch(next);
+};
+
 const getUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(() => {
@@ -114,6 +129,8 @@ const updateUserAvatar = (req, res, next) => {
 };
 
 module.exports = {
+  getUsers,
+  getUserById,
   getUser,
   createUser,
   updateUser,
