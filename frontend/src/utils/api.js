@@ -87,14 +87,10 @@ class Api {
         body: JSON.stringify(data),
       })
       .then((res) => {
-        if (res) {
-          console.log(res.json());
+        if (res.ok) {
+          return res.json();
         }
         return Promise.reject(new Error(res.statusText));
-        // if (res.ok) {
-        //   return res.json();
-        // }
-        // return Promise.reject(new Error(res.statusText));
       });
   }
 
