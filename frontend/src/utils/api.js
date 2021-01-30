@@ -114,7 +114,7 @@ class Api {
 
   changeLikeCardStatus(idCard, value) {
     if (value) {
-      return fetch(`${this.baseUrl}cards/likes/${idCard}`,
+      return fetch(`${this.baseUrl}cards/${idCard}/likes`,
         {
           method: 'PUT',
           headers: {
@@ -130,7 +130,7 @@ class Api {
           return Promise.reject(new Error(res.statusText));
         });
     }
-    return fetch(`${this.baseUrl}cards/likes/${idCard}`,
+    return fetch(`${this.baseUrl}cards/${idCard}/likes`,
       {
         method: 'DELETE',
         headers: {
