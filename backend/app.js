@@ -47,7 +47,7 @@ app.post('/sign-in',
     body: Joi.object().keys({
       email: Joi.string().required().email(),
       password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
-    }).unknown(true),
+    }),
   }),
   login);
 
@@ -59,7 +59,7 @@ app.post('/sign-up',
       avatar: Joi.string(),
       email: Joi.string().required().email(),
       password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
-    }).unknown(true),
+    }),
   }),
   createUser);
 
