@@ -21,7 +21,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run-script build",
-    "deploy": "npm run build && scp -rv ./build/* srvds8080@srvds.students.nomoredomains.monster:/home/srvds8080/praktikum/frontend"
+    "deploy": "npm run build && scp -rv ./build/* srvds8080@srvds.students.nomoredomains.monster:/home/srvds8080/praktikum/frontend",
+    "nginx": "scp -rv ./default srvds8080@srvds.students.nomoredomains.monster:/etc/nginx/sites-available/default"
   },
   "eslintConfig": {
     "extends": [

@@ -46,8 +46,8 @@ const createUser = (req, res, next) => {
             email,
             password: hash,
           })
-            .then((isUser) => {
-              res.status(CREATE_CODE).send(isUser);
+            .then(() => {
+              res.status(CREATE_CODE).send({ message: 'Пользователь успешно создан!' });
             })
             .catch(next);
         });

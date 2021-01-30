@@ -87,10 +87,14 @@ class Api {
         body: JSON.stringify(data),
       })
       .then((res) => {
-        if (res.ok) {
-          return res.json();
+        if (res) {
+          console.log(res.json());
         }
         return Promise.reject(new Error(res.statusText));
+        // if (res.ok) {
+        //   return res.json();
+        // }
+        // return Promise.reject(new Error(res.statusText));
       });
   }
 
@@ -148,6 +152,7 @@ class Api {
   }
 }
 
-const baseUrl = 'https://api.srvds.students.nomoredomains.monster/';
+// const baseUrl = 'https://api.srvds.students.nomoredomains.monster/';
+const baseUrl = 'http://localhost:3000/';
 const api = new Api(baseUrl);
 export default api;

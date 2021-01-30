@@ -53,6 +53,7 @@ class ApiAuth {
   }
 }
 
-const baseUrl = 'https://api.srvds.students.nomoredomains.monster/';
+// const baseUrl = 'https://api.srvds.students.nomoredomains.monster/';
+const baseUrl = 'http://localhost:3000/';
 const Auth = new ApiAuth(baseUrl);
 export default Auth;

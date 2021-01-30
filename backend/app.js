@@ -69,6 +69,11 @@ app.use(auth);
 app.use('/', usersRouter);
 app.use('/', cardsRouter);
 
+app.use((req, res, next) => {
+  res.status(404).send({ error: 'Not found' });
+  next();
+});
+
 app.use(errorLogger);
 app.use(errors());
 app.use((err, req, res, next) => {
