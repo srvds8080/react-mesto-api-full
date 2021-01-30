@@ -1,5 +1,6 @@
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
+const ForbiddenError = require('../errors/ForbiddenError');
 const Card = require('../models/card');
 
 // errors codes
@@ -40,21 +41,30 @@ const createCard = (req, res, next) => {
   }
 };
 
-const deleteCard = (req, res, next) => Card
-  .findByIdAndRemove(req.params.cardId)
-  .orFail(() => {
-    throw new NotFoundError('такой карточки не существует');
-  })
-  .then(() => {
-    res.status(OK_CODE).send({ message: 'Карточка успешно удалена' });
-  })
-  .catch(next);
+const deleteCard = (req, res, next) => {
+  const { _id } = req.user;
+  const { cardId } = req.params;
+  Card.findById(cardId)
+    .then((card) => {
+      if (!card) {
+        return next(new NotFoundError('Такой карточки не существует'));
+      }
+      if (card.owner.toString() !== _id) {
+        return next(new ForbiddenError('Нельзя удалять чужие карточки!'));
+      }
+      return Card.findByIdAndRemove(cardId)
+        .then(() => {
+          res.status(OK_CODE).send({ message: 'Карточка успешно удалена' });
+        })
+        .catch(next);
+    });
+};
 
 const putLike = (req, res, next) => {
   Card
     .findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: [req.user._id] } }, { new: true })
     .orFail(() => {
-      throw new NotFoundError('такой карточки не существует');
+      throw new NotFoundError('Такой карточки не существует');
     })
     .then((card) => {
       res.status(OK_CODE).send(card);
