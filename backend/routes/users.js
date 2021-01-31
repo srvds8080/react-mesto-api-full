@@ -7,6 +7,7 @@ const {
   updateUser,
   updateUserAvatar,
 } = require('../controllers/users');
+const { REGEX_URL } = require('../utils/constants');
 
 router.get('/users/', getUsers);
 router.get('/users/me', getUser);
@@ -23,7 +24,7 @@ router.patch('/users/me', celebrate({
 }), updateUser);
 router.patch('/users/me/avatar', celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().uri(),
+    avatar: Joi.string().pattern(new RegExp(REGEX_URL)).required(true),
   }),
 }), updateUserAvatar);
 module.exports = router;
