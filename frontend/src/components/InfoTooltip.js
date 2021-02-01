@@ -7,7 +7,17 @@ function InfoTooltip({
   isOpen,
   isRegister,
   onClose,
+  isSuccess,
 }) {
+  const getTitle = () => {
+    if (isSuccess) {
+      return isRegister
+        ? 'вы успешно зарегистрированы'
+        : 'вы успешно авторизованы';
+    }
+    return 'Что то пошло  не так';
+  };
+
   return (
     <div className={`popup ${isOpen && 'popup_opened'}`}>
       <div className="popup__container">
@@ -20,9 +30,7 @@ function InfoTooltip({
         {isRegister ? <Successfull className="popup__iconTooltip" /> : <Falled className="popup__iconTooltip" />}
         <h2 className="popup__message">
           {
-          isRegister
-            ? 'Вы успешно зарегистрированы'
-            : 'Что-то пошло не так!\nПопробуйте еще раз.'
+            getTitle()
           }
         </h2>
       </div>
@@ -32,6 +40,7 @@ function InfoTooltip({
 
 InfoTooltip.propTypes = {
   isOpen: PropTypes.bool.isRequired,
+  isSuccess: PropTypes.bool.isRequired,
   isRegister: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };

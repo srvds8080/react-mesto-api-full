@@ -172,6 +172,7 @@ function App() {
         history.push('/');
       })
       .catch(() => {
+        setIsRegister(false);
         setIsInfoTooltipOpen(true);
       });
   }, []);
@@ -208,6 +209,7 @@ function App() {
             isOpen={isInfoTooltipOpen}
             onClose={() => closeAllPopups()}
             isRegister={isRegister}
+            isSuccess={isRegister || loggedIn}
           />
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
