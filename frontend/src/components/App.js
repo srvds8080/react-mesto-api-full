@@ -116,7 +116,11 @@ function App() {
       .then((newCard) => {
         setCards((newCards) => [newCard.data, ...newCards]);
       })
-      .catch((error) => console.log(error))
+      .catch((error) => {
+        if (error.status === 400) {
+          console.log({ message: 'Запрос не верный' });
+        }
+      })
       .finally(() => {
         closeAllPopups();
       });
