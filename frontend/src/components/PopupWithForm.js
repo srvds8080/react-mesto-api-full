@@ -27,9 +27,7 @@ function PopupWithForm({
           noValidate
         >
           { children }
-          {isFormValid
-            ? <button className="popup__form-btn" type="submit">{buttonTitle}</button>
-            : <button className="popup__form-btn" type="submit" disabled>{buttonTitle}</button>}
+          <button className="popup__form-btn" type="submit" disabled={!isFormValid}>{buttonTitle}</button>
         </form>
       </div>
     </div>
