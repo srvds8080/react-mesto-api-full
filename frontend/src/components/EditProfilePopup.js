@@ -12,28 +12,45 @@ function EditProfilePopup(props) {
   const { isOpen, onClose, onUpdateUser } = props;
   const currentUser = useContext(CurrentUserContext);
   const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const [about, setAbout] = useState('');
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     setName(currentUser.name);
-    setDescription(currentUser.about);
-  }, [currentUser, isOpen]);
+    setAbout(currentUser.about);
+  }, [isOpen]);
 
-  const handleName = (e) => {
-    setName(e.target.value);
+  const handleValidate = useCallback((e) => {
+    setErrors((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.validity.valid ? '' : e.target.validationMessage,
+    }));
+  }, [errors]);
+
+  const handleOnChange = (e) => {
+    const { value } = e.target;
+    if (e.target.name === 'userName') {
+      setName(value);
+      handleValidate(e);
+    } else {
+      setAbout(value);
+      handleValidate(e);
+    }
   };
 
-  const handleDescription = (e) => {
-    setDescription(e.target.value);
-  };
-
-  const handleSubmit = useCallback((e) => {
+  const handleOnSubmit = useCallback((e) => {
     e.preventDefault();
-    onUpdateUser({
-      name,
-      about: description,
-    });
-  }, [name, description]);
+    onUpdateUser({ name, about });
+  }, [name, about]);
+
+  const handleOnClose = useCallback(() => {
+    setErrors((prevState) => ({
+      ...prevState,
+      userName: '',
+      userAbout: '',
+    }));
+    onClose();
+  }, []);
 
   return (
     <PopupWithForm
@@ -41,14 +58,14 @@ function EditProfilePopup(props) {
       title="Редактировать профиль"
       buttonTitle="Сохранить"
       isOpen={isOpen}
-      onClose={onClose}
-      onSubmit={handleSubmit}
+      onClose={handleOnClose}
+      onSubmit={handleOnSubmit}
     >
       <>
         <label htmlFor="popup-input_type_name" className="popup__label">
           <input
             type="text"
-            name="popup-input_type_name"
+            name="userName"
             className="popup__input popup__input_type_name"
             placeholder="Имя"
             minLength="2"
@@ -56,27 +73,34 @@ function EditProfilePopup(props) {
             required
             autoComplete="off"
             value={name || ''}
-            onChange={handleName}
+            onChange={handleOnChange}
           />
-          <span className="popup__form-error" id="popup-input_type_name-error" />
+          <span
+            className="popup__form-error"
+            id="popup-input_type_name-error"
+          >
+            {errors.userName}
+          </span>
         </label>
         <label htmlFor="popup-input_type_description" className="popup__label">
           <input
             type="text"
-            name="popup-input_type_description"
+            name="userAbout"
             className="popup__input popup__input_type_about"
             placeholder="Профессия"
             minLength="2"
             maxLength="200"
             required
             autoComplete="off"
-            value={description || ''}
-            onChange={handleDescription}
+            value={about || ''}
+            onChange={handleOnChange}
           />
           <span
             className="popup__form-error"
             id="popup-input_type_description-error"
-          />
+          >
+            {errors.userAbout}
+          </span>
         </label>
       </>
     </PopupWithForm>
