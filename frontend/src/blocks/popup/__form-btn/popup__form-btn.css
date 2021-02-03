@@ -22,7 +22,12 @@
 	outline: none;
 }
 .popup__form-btn:disabled {
-	cursor: default;
+  cursor: default;
+  background: rgba(0, 0, 0, 0);
+  border: rgba(0, 0, 0, 0.2) 1px solid;
+  border-radius: 2px;
+  color: rgba(0, 0, 0, 0.2);
+  transition: ease 0.5s;
 }
 @media screen and (min-width: 768px) {
 	.popup__form-btn {

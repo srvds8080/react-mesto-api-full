@@ -9,6 +9,7 @@ function PopupWithForm({
   isOpen,
   onClose,
   onSubmit,
+  isFormValid,
 }) {
   return (
     <div className={`popup popup_type_${name} ${isOpen && 'popup_opened'}`}>
@@ -26,24 +27,22 @@ function PopupWithForm({
           noValidate
         >
           { children }
-          <button
-            className="popup__form-btn"
-            type="submit"
-          >
-            { buttonTitle }
-          </button>
+          <button className="popup__form-btn" type="submit" disabled={!isFormValid}>{buttonTitle}</button>
         </form>
       </div>
     </div>
   );
 }
-
+PopupWithForm.defaultProps = {
+  isFormValid: false,
+};
 PopupWithForm.propTypes = {
   title: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   buttonTitle: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
   isOpen: PropTypes.bool.isRequired,
+  isFormValid: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
 };
