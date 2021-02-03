@@ -13,7 +13,7 @@ function EditProfilePopup(props) {
   const [name, setName] = useState('');
   const [about, setAbout] = useState('');
   const [errors, setErrors] = useState({});
-  const [isFormValid, setIsFormValid] = useState(true);
+  const [isFormValid, setIsFormValid] = useState(false);
   const currentUser = useContext(CurrentUserContext);
 
   const handleValidate = useCallback((e) => {
