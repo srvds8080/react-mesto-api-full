@@ -1,17 +1,55 @@
-import React, { useRef } from 'react';
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  useContext,
+} from 'react';
 import PropTypes from 'prop-types';
 import PopupWithForm from './PopupWithForm';
+import CurrentUserContext from '../context/CurrentUserContext';
 
 function EditAvatarPopup({
   isOpen,
   onClose,
   onUpdateAvatar,
 }) {
-  const inputElement = useRef(null);
+  const [avatarLink, setAvatarLink] = useState('');
+  const [errors, setErrors] = useState({});
+  const [isFormValid, setIsFormValid] = useState(false);
+  const currentUser = useContext(CurrentUserContext);
+
+  const handleValidate = useCallback((e) => {
+    setErrors((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.validity.valid ? '' : e.target.validationMessage,
+    }));
+  }, [errors, isOpen]);
+
+  const handleOnChange = (e) => {
+    handleValidate(e);
+    setAvatarLink(e.target.value);
+  };
+  const handleOnClose = useCallback(() => {
+    setErrors((prevState) => ({
+      ...prevState,
+      avatar: '',
+    }));
+    onClose();
+  }, []);
   const handleSubmit = (e) => {
     e.preventDefault();
-    onUpdateAvatar(inputElement.current.value);
+    onUpdateAvatar(avatarLink);
   };
+  // check form on errors
+  useEffect(() => {
+    if (!Object.values(errors).every((key) => key === '')) {
+      return setIsFormValid(false);
+    }
+    return setIsFormValid(true);
+  }, [isOpen, handleOnChange]);
+  useEffect(() => {
+    setAvatarLink(currentUser.avatar);
+  }, [isOpen]);
 
   return (
     <PopupWithForm
@@ -19,23 +57,27 @@ function EditAvatarPopup({
       title="Обновить аватар"
       buttonTitle="Сохранить"
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleOnClose}
       onSubmit={handleSubmit}
+      isFormValid={isFormValid}
     >
       <label htmlFor="popup-input_type_avatar" className="popup__label">
         <input
-          ref={inputElement}
           type="url"
-          name="popup-input_type_avatar"
+          name="avatar"
           className="popup__input popup__input_type_avatar"
           placeholder="Ссылка на изображение"
           required
           autoComplete="off"
+          value={avatarLink || ''}
+          onChange={handleOnChange}
         />
         <span
           className="popup__form-error"
           id="popup-input_type_avatar-error"
-        />
+        >
+          {errors.avatar}
+        </span>
       </label>
     </PopupWithForm>
   );
