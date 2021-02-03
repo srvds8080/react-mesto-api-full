@@ -10,22 +10,18 @@ import CurrentUserContext from '../context/CurrentUserContext';
 
 function EditProfilePopup(props) {
   const { isOpen, onClose, onUpdateUser } = props;
-  const currentUser = useContext(CurrentUserContext);
   const [name, setName] = useState('');
   const [about, setAbout] = useState('');
   const [errors, setErrors] = useState({});
-
-  useEffect(() => {
-    setName(currentUser.name);
-    setAbout(currentUser.about);
-  }, [isOpen]);
+  const [isFormValid, setIsFormValid] = useState(true);
+  const currentUser = useContext(CurrentUserContext);
 
   const handleValidate = useCallback((e) => {
     setErrors((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.validity.valid ? '' : e.target.validationMessage,
     }));
-  }, [errors]);
+  }, [errors, isOpen]);
 
   const handleOnChange = (e) => {
     const { value } = e.target;
@@ -38,11 +34,6 @@ function EditProfilePopup(props) {
     }
   };
 
-  const handleOnSubmit = useCallback((e) => {
-    e.preventDefault();
-    onUpdateUser({ name, about });
-  }, [name, about]);
-
   const handleOnClose = useCallback(() => {
     setErrors((prevState) => ({
       ...prevState,
@@ -52,6 +43,24 @@ function EditProfilePopup(props) {
     onClose();
   }, []);
 
+  const handleOnSubmit = useCallback((e) => {
+    e.preventDefault();
+    onUpdateUser({ name, about });
+  }, [name, about]);
+
+  useEffect(() => {
+    setName(currentUser.name);
+    setAbout(currentUser.about);
+  }, [isOpen]);
+
+  // check form on errors
+  useEffect(() => {
+    if (!Object.values(errors).every((key) => key === '')) {
+      return setIsFormValid(false);
+    }
+    return setIsFormValid(true);
+  }, [isOpen, handleOnChange]);
+
   return (
     <PopupWithForm
       name="edit-profile"
@@ -60,6 +69,7 @@ function EditProfilePopup(props) {
       isOpen={isOpen}
       onClose={handleOnClose}
       onSubmit={handleOnSubmit}
+      isFormValid={isFormValid}
     >
       <>
         <label htmlFor="popup-input_type_name" className="popup__label">
