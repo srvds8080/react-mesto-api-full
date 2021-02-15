@@ -11,7 +11,7 @@ const { login, createUser } = require('./controllers/users.js');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { REGEX_URL } = require('./utils/constants');
 
-const { PORT = 3000, PATH_DB } = process.env;
+const { PORT = 3000, PATH_DB = 'mongodb+srv://srvds:1234qwer@cluster0.vzqr2.mongodb.net/<dbname>?retryWrites=true&w=majority' } = process.env;
 const app = express();
 
 const allowedCors = [
@@ -47,7 +47,7 @@ app.post('/sign-in',
   celebrate({
     body: Joi.object().keys({
       email: Joi.string().required().email(),
-      password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
+      password: Joi.string().required(),
     }),
   }),
   login);
@@ -59,7 +59,7 @@ app.post('/sign-up',
       about: Joi.string().min(2).max(30),
       avatar: Joi.string().pattern(new RegExp(REGEX_URL)),
       email: Joi.string().email().required(),
-      password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
+      password: Joi.string().required(),
     }),
   }),
   createUser);
