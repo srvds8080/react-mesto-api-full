@@ -40,6 +40,7 @@ const getUser = (req, res, next) => {
 };
 
 const createUser = (req, res, next) => {
+  console.log(req)
   const {
     name,
     about,
